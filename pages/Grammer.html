@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EnglishWithNour - Grammar</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container-fluid px-0">
+        <header class="navbar">
+            <div class="container">
+                <div class="logo"><a href="../index.html">EnglishWithNour</a></div>
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    ☰
+                </button>
+                <!-- Navigation links -->
+                <nav id="nav-links">
+                    <a href="../index.html">Home</a>
+                    <a href="Grammer.html">Grammar</a>
+                    <a href="../CoomingSoon.html">Listening</a>
+                    <a href="../CoomingSoon.html">Writing</a>
+                    <a href="../CoomingSoon.html">Reading</a>
+                    <a href="../CoomingSoon.html">Vocabulary</a>
+                    <a href="../CoomingSoon.html">Exams</a>
+                </nav>
+                <div class="account-btn">Sign in</div>
+            </div>
+        </header>
+
+        <div class="grammar-container">
+            <header class="grammar-header">
+                <div class="grammar-tabs" id="levelTabs" role="tablist" aria-label="Levels">
+                    <div class="grammar-tab active" data-level="A1">A1 Elementary</div>
+                    <div class="grammar-tab" data-level="A2">A2 Pre-intermediate</div>
+                    <div class="grammar-tab" data-level="B1">B1 Intermediate</div>
+                    <div class="grammar-tab" data-level="B2">B2 Upper-intermediate</div>
+                    <div class="grammar-tab" data-level="C1">C1 Pre-advanced</div>
+                </div>
+                <div class="grammar-search-box">
+                    <input id="searchInput" placeholder="Search for a rule" />
+                </div>
+            </header>
+
+            <main>
+                <div class="grammar-level-header">
+                    <h2 id="levelTitle">A1 — Elementary</h2>
+                    <div class="grammar-progress" title="progress"><i id="progressBar" style="width:0%"></i></div>
+                    <div id="progressPct">0%</div>
+                </div>
+
+                <div id="cardsArea" class="grammar-cards"></div>
+
+                <div id="detailArea" style="margin-top:18px"></div>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-container">
+                <!-- Brand -->
+                <div class="footer-brand">
+                    <h2>EnglishWithNour</h2>
+                    <p>Learn English step-by-step with fun, interactive lessons for all levels.</p>
+                </div>
+
+                <!-- Skills -->
+                <div class="footer-skills">
+                    <h3>Skills</h3>
+                    <div class="skills-columns">
+                        <ul>
+                            <li><a href="Grammer.html">Grammar</a></li>
+                            <li><a href="../CoomingSoon.html">Vocabulary</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="../CoomingSoon.html">Reading</a></li>
+                            <li><a href="../CoomingSoon.html">Writing</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="../CoomingSoon.html">Listening</a></li>
+                            <li><a href="../CoomingSoon.html">Exams</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 English With Nour. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- load data.js which declares grammarData -->
+   <script src="../js/data.js"></script>
+
+<script>
+// Hamburger Menu Toggle
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+});
+
+// ====== Grammar Page Script ======
+let currentLevel = 'A1';
+
+// Helper: toSlug
+function toSlug(text) {
+    return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+// Utility: safe key for localStorage
+const keyFor = (level, slug) => `completed::${level}::${slug}`;
+
+// Render cards for currentLevel (filtered by searchTerm)
+function renderCards(filter = '') {
+    const area = document.getElementById('cardsArea');
+    area.innerHTML = '';
+    const list = (grammarData[currentLevel] || []).filter(it =>
+        it.title.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    if (!list.length) {
+        area.innerHTML = '<div class="grammar-empty-spot">No matching grammar rules found.</div>';
+        return;
+    }
+
+    list.forEach(item => {
+        if (!item.slug) {
+            item.slug = toSlug(item.title); 
+        }
+
+        const card = document.createElement('div');
+        card.className = 'grammar-card';
+
+        const title = document.createElement('div');
+        title.className = 'title';
+        title.textContent = item.title;
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        // ✅ تعديل زر Open علشان يبعث slug مش title
+        const openBtn = document.createElement('button');
+        openBtn.className = 'grammar-btn';
+        openBtn.textContent = 'Open';
+        openBtn.onclick = () => {
+            localStorage.setItem('lastLevel', currentLevel);
+            const url = `../lesson.html?level=${encodeURIComponent(currentLevel)}&slug=${encodeURIComponent(item.slug)}`;
+            window.location.href = url;
+        };
+
+        const chk = document.createElement('input');
+        chk.type = 'checkbox';
+        chk.title = 'Mark as completed';
+        chk.checked = !!localStorage.getItem(keyFor(currentLevel, item.slug));
+        chk.onchange = () => {
+            if (chk.checked) {
+                localStorage.setItem(keyFor(currentLevel, item.slug), '1');
+            } else {
+                localStorage.removeItem(keyFor(currentLevel, item.slug));
+            }
+            updateProgress();
+        };
+
+        actions.append(chk, openBtn);
+        card.append(title, actions);
+        area.appendChild(card);
+    });
+
+    updateProgress();
+}
+
+function updateProgress() {
+    const total = (grammarData[currentLevel] || []).length;
+    let done = 0;
+    (grammarData[currentLevel] || []).forEach(it => {
+        if (!it.slug) it.slug = toSlug(it.title);
+        if (localStorage.getItem(keyFor(currentLevel, it.slug))) done++;
+    });
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+}
+
+// Tab switching
+document.querySelectorAll('.grammar-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+ 
+    document.querySelectorAll('.grammar-tab').forEach(x => x.classList.remove('active'));
+  
+    tab.classList.add('active');
+
+   
+    currentLevel = tab.dataset.level || '';
+
+
+    localStorage.setItem('selectedTab', currentLevel);
+
+    
+    const levelTitle = document.getElementById('levelTitle');
+    if (levelTitle) {
+      const extraText = tab.textContent.split(' ').slice(1).join(' ');
+      levelTitle.textContent = `${currentLevel} — ${extraText}`;
+    }
+
+   
+    const detailArea = document.getElementById('detailArea');
+    if (detailArea) detailArea.innerHTML = '';
+
+    
+    if (typeof renderCards === 'function') {
+      const searchInput = document.getElementById('searchInput');
+      renderCards(searchInput ? searchInput.value : '');
+    }
+  });
+});
+
+// عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTab = localStorage.getItem('selectedTab');
+  if (savedTab) {
+    const tab = document.querySelector(`.grammar-tab[data-level="${savedTab}"]`);
+    if (tab) tab.click(); 
+  } else {
+
+    const firstTab = document.querySelector('.grammar-tab');
+    if (firstTab) firstTab.click();
+  }
+});
+
+
+// Search
+document.getElementById('searchInput').addEventListener('input', e => {
+    renderCards(e.target.value);
+});
+
+// === تحميل المستوى المحفوظ إن وجد ===
+const savedLevel = localStorage.getItem('lastLevel');
+if (savedLevel && document.querySelector(`.grammar-tab[data-level="${savedLevel}"]`)) {
+    currentLevel = savedLevel;
+
+    // تفعيل التبويب المحفوظ
+    document.querySelectorAll('.grammar-tab').forEach(x => x.classList.remove('active'));
+    document.querySelector(`.grammar-tab[data-level="${savedLevel}"]`).classList.add('active');
+
+    // تحديث العنوان
+    document.getElementById('levelTitle').textContent =
+        `${currentLevel} — ${document.querySelector(`.grammar-tab[data-level="${savedLevel}"]`).textContent.split(' ').slice(1).join(' ')}`;
+}
+
+// بعد تحديد المستوى، نرسم الكروت
+renderCards();
+
+// expose functions for debugging (optional)
+window.grammarData = grammarData;
+</script>
+
+
+</body>
+</html>

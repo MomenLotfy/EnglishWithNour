@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- تأكد من وجود viewport meta tag بهذه الطريقة -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EnglishWithNour - English School for Children</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container-fluid px-0">
+        <header class="navbar">
+            <div class="container">
+                <div class="logo"><a href="index.html">EnglishWithNour</a></div>
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    ☰
+                </button>
+                <!-- Navigation links -->
+                <nav id="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="pages/Grammer.html">Grammar</a>
+                    <a href="CoomingSoon.html">Listening</a>
+                    <a href="CoomingSoon.html">Writing</a>
+                    <a href="CoomingSoon.html">Reading</a>
+                    <a href="CoomingSoon.html">Vocabulary</a>
+                    <a href="CoomingSoon.html">Exams</a>
+
+                </nav>
+                <div class="account-btn" >Sign in</div>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="container">
+                <div class="hero-inner">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1>FOUNDATION COURSES <br>FOR CHILDREN</h1>
+                            <ul>
+                                <li>✔ Build a strong English foundation for your child step by step</li>
+                                <li>✔ Expert help with school curriculum: grammar, reading & writing</li>
+                                <li>✔ Small group classes [5 to 10 students for focused attention]</li>
+                            </ul>
+                            <button class="cta">TRY A FREE LESSON</button>
+                        </div>
+                        <div class="hero-image">
+                            <img id="hero-image" src="images/character-1.png" alt="Kid with Laptop" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="skills-section">
+    <h1>Select a Skill to Learn English</h1>
+
+    <div class="cards-container">
+      <div class="card grammar">
+        <img src="images/card-grammer.png" alt="Grammar" />
+        <h3>Grammar</h3>
+        <p>Learn English grammar through fun and interactive lessons.</p>
+        <a href="pages/Grammer.html" class="card-btn">Learn more →</a>
+      </div>
+
+      <div class="card writing">
+        <img src="images/card-writing.png" alt="Writing" />
+        <h3>Writing</h3>
+        <p>Practice writing sentences and paragraphs step by step.</p>
+         <a href="CoomingSoon.html" class="card-btn">Learn more →</a>
+      </div>
+
+      <div class="card listening">
+        <img src="images/card-listening.png" alt="Listening" />
+        <h3>Listening</h3>
+        <p>Improve listening skills with audio clips and exercises.</p>
+         <a href="CoomingSoon.html" class="card-btn">Learn more →</a>
+      </div>
+
+      <div class="card reading">
+        <img src="images/card-reading.png" alt="Reading" />
+        <h3>Reading</h3>
+        <p>Build reading comprehension with fun and varied texts.</p>
+         <a href="CoomingSoon.html" class="card-btn">Learn more →</a>
+      </div>
+      <div class="card Vocabulary">
+        <img src="images/card-vocabulary.png" alt="Vocabulary" />
+        <h3>Vocabulary</h3>
+        <p>Improve listening skills with audio clips and exercises.</p>
+         <a href="CoomingSoon.html" class="card-btn">Learn more →</a>
+      </div>
+      <div class="card Exams">
+        <img src="images/card-exams.png" alt="Exams" />
+        <h3>Exams</h3>
+        <p>Improve listening skills with audio clips and exercises.</p>
+        <a href="CoomingSoon.html" class="card-btn">Learn more →</a>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+  <div class="footer-container">
+
+    <!-- Brand -->
+    <div class="footer-brand">
+      <h2>EnglishWithNour</h2>
+      <p>Learn English step-by-step with fun, interactive lessons for all levels.</p>
+    </div>
+
+    <!-- Skills -->
+    <div class="footer-skills">
+      <h3>Skills</h3>
+      <div class="skills-columns">
+        <ul>
+          <li><a href="pages/Grammer.html">Grammar</a></li>
+          <li><a href="CoomingSoon.html">Vocabulary</a></li>
+        </ul>
+        <ul>
+          <li><a href="CoomingSoon.html">Reading</a></li>
+          <li><a href="CoomingSoon.html">Writing</a></li>
+        </ul>
+        <ul>
+            <li><a href="CoomingSoon.html">Listening</a></li>
+            <li><a href="CoomingSoon.html">Exams</a></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 English With Nour. All rights reserved.</p>
+  </div>
+</footer>
+
+
+        
+    </div>
+
+    <script>
+        const images = ["images/character-1.png", "images/character-2.png"];
+        let index = 0;
+        const imageElement = document.getElementById("hero-image");
+        setInterval(() => {
+            index = (index + 1) % images.length;
+            imageElement.src = images[index];
+        }, 1400);
+
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
