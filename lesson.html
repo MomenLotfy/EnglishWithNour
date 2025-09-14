@@ -90,9 +90,6 @@ h2#lessonTitle {
   box-shadow: 0 3px 10px rgba(46, 79, 255, 0.07);
   transition: transform 0.2s ease;
 }
-.question:hover {
-  transform: translateY(-4px);
-}
 
 .question p {
   font-size: 1.1rem;
@@ -221,12 +218,10 @@ h2#lessonTitle {
     </div>
   </div>
 
-  <!-- data.js must be available (مسار مثل اللي تستخدمه في Grammer.html) -->
+  <!-- data.js must be available -->
   <script src="js/data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
-  
   <script>
     // Helper to get URL params
     const params = new URLSearchParams(window.location.search);
@@ -234,103 +229,115 @@ h2#lessonTitle {
     const slug = params.get('slug') || null;
     const titleParam = params.get('title') || null;
 
-    function toSlug(text=''){ return text.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+    function toSlug(text = '') { 
+      return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); 
+    }
 
     // findLesson: by slug OR by title in grammarData[level]
     function findLesson() {
-  if (!grammarData) return null;
+      if (!grammarData) return null;
 
-  // البحث في جميع المستويات
-  for (const level of Object.keys(grammarData)) {
-    const lesson = grammarData[level].find(item => item.slug === slug);
-    if (lesson) {
-      // إذا لم يكن هناك تمارين، ننشئها تلقائياً
-      if (!lesson.exercises || lesson.exercises.length === 0) {
-      lesson.exercises = generateDefaultMCQs(lesson.slug || toSlug(lesson.title), 30);
+      // البحث في جميع المستويات
+      for (const levelKey of Object.keys(grammarData)) {
+        const lesson = grammarData[levelKey].find(item => item.slug === slug);
+        if (lesson) {
+          return lesson;
+        }
       }
-      return lesson;
+
+      return null;
     }
-  }
 
-  return null;
-}
-
-
-    // default generator example (Present Simple). Can extend for other topics.
-    function generateDefaultMCQs(topicSlug, n=40){
-      if(topicSlug && topicSlug.includes('present-simple')){
-        const subjects = ["I","You","We","They","He","She","It"];
-        const verbs = ["play","eat","go","study","watch","drink","like","work","read","live"];
+    // default generator example for fallback
+    function generateDefaultMCQs(topicSlug, n = 10) {
+      if (topicSlug && topicSlug.includes('present-simple')) {
+        const subjects = ["I", "You", "We", "They", "He", "She", "It"];
+        const verbs = ["play", "eat", "go", "study", "watch", "drink", "like", "work", "read", "live"];
         const arr = [];
-        for(let i=0;i<n;i++){
+        for (let i = 0; i < n; i++) {
           const subj = subjects[i % subjects.length];
           const verb = verbs[i % verbs.length];
-          const is3rd = ["He","She","It"].includes(subj);
+          const is3rd = ["He", "She", "It"].includes(subj);
           const correct = is3rd ? `${verb}s` : verb;
           const wrong = is3rd ? verb : `${verb}s`;
-          // randomize option order half the time
-          if(Math.random() < 0.5) arr.push({ q: `${subj} ____ football.`, opts: [wrong, correct], a: 1 });
-          else arr.push({ q: `${subj} ____ football.`, opts: [correct, wrong], a: 0 });
+          
+          if (Math.random() < 0.5) {
+            arr.push({ q: `${subj} ____ football.`, opts: [wrong, correct], a: 1 });
+          } else {
+            arr.push({ q: `${subj} ____ football.`, opts: [correct, wrong], a: 0 });
+          }
         }
         return arr;
       }
 
-      // Generic fallback: simple true/false style
+      // Generic fallback
       const arr = [];
-      for(let i=0;i<n;i++){
-        arr.push({ q: `Question ${i+1} (no specific generator for this topic).`, opts: ["True","False"], a: 0 });
+      for (let i = 0; i < n; i++) {
+        arr.push({ 
+          q: `Sample question ${i + 1} for ${topicSlug || 'this topic'}.`, 
+          opts: ["Option A", "Option B"], 
+          a: 0 
+        });
       }
       return arr;
     }
 
     // Render lesson
     const lesson = findLesson();
-    if(!lesson){
+    
+    if (!lesson) {
       document.getElementById('lessonTitle').textContent = 'Lesson not found';
       document.getElementById('explanation').innerHTML = '<p>No lesson data was found for this topic.</p>';
     } else {
       document.getElementById('lessonTitle').textContent = lesson.title || titleParam || 'Lesson';
       document.getElementById('explanation').innerHTML = lesson.explanation || '<p>No explanation yet.</p>';
 
-      // exercises
-      let exercises = lesson.exercises || null;
-      if(!exercises || !Array.isArray(exercises) || exercises.length === 0){
-        // generate default if possible
-        exercises = generateDefaultMCQs(slug || toSlug(lesson.title), 30);
+      // الحصول على التمارين من ملف data.js
+      let exercises = lesson.exercises || [];
+      
+      // إذا لم تكن هناك تمارين في data.js، استخدم التمارين الافتراضية
+      if (!exercises || !Array.isArray(exercises) || exercises.length === 0) {
+        console.log('No exercises found in data.js, generating default exercises');
+        exercises = generateDefaultMCQs(slug || toSlug(lesson.title), 10);
       } else {
-        // limit to 30
-        exercises = exercises.slice(0,40);
+        console.log(`Found ${exercises.length} exercises in data.js`);
+        // استخدم التمارين كما هي بدون تكرار أو زيادة
+        // exercises = exercises; // بدون تعديل في العدد
       }
 
       // render exercises UI
       const exWrap = document.getElementById('exercisesContent');
-      function renderExercises(){
+      
+      function renderExercises() {
         exWrap.innerHTML = '';
         exercises.forEach((ex, i) => {
           const div = document.createElement('div');
-          div.className = 'question mb-3 p-2 border rounded';
+          div.className = 'question mb-3';
+          
           const p = document.createElement('p');
-          p.innerHTML = `<strong>${i+1}.</strong> ${ex.q}`;
+          p.innerHTML = `<strong>${i + 1}.</strong> ${ex.q}`;
           div.appendChild(p);
 
-          ex.opts.forEach((opt, j) => {
-            const id = `q${i}_opt${j}`;
-            const radio = document.createElement('input');
-            radio.type = 'radio';
-            radio.name = `q${i}`;
-            radio.value = j;
-            radio.id = id;
+          if (ex.opts && Array.isArray(ex.opts)) {
+            ex.opts.forEach((opt, j) => {
+              const id = `q${i}_opt${j}`;
+              const radio = document.createElement('input');
+              radio.type = 'radio';
+              radio.name = `q${i}`;
+              radio.value = j;
+              radio.id = id;
 
-            const label = document.createElement('label');
-            label.htmlFor = id;
-            label.id = `${id}_label`;
-            label.innerText = opt;
+              const label = document.createElement('label');
+              label.htmlFor = id;
+              label.className = 'option-label';
+              label.innerText = opt;
 
-            const wrapper = document.createElement('div');
-            wrapper.appendChild(radio);
-            wrapper.appendChild(label);
-            div.appendChild(wrapper);
-          });
+              const wrapper = document.createElement('div');
+              wrapper.appendChild(radio);
+              wrapper.appendChild(label);
+              div.appendChild(wrapper);
+            });
+          }
 
           exWrap.appendChild(div);
         });
@@ -343,35 +350,51 @@ h2#lessonTitle {
         let score = 0;
         exercises.forEach((ex, i) => {
           const selected = document.querySelector(`input[name="q${i}"]:checked`);
-          const user = selected ? parseInt(selected.value,10) : null;
-          const correct = ex.a === undefined ? 0 : ex.a;
-          // color labels
+          const userAnswer = selected ? parseInt(selected.value, 10) : null;
+          const correctAnswer = ex.a !== undefined ? ex.a : 0;
+          
+          // إزالة الألوان السابقة
+          const labels = document.querySelectorAll(`input[name="q${i}"] + label`);
+          labels.forEach(label => {
+            label.classList.remove('correct', 'incorrect');
+          });
+
+          // تلوين الإجابات
           ex.opts.forEach((_, j) => {
-            const lab = document.getElementById(`q${i}_opt${j}_label`);
-            // lab may be null because id used is label id earlier formatting
-            const labelId = `q${i}_opt${j}_label`;
-            const labelElem = document.getElementById(labelId);
-            if(labelElem){
-              labelElem.classList.remove('correct','incorrect');
-              if(j === correct) labelElem.classList.add('correct');
-              else if(user === j && user !== correct) labelElem.classList.add('incorrect');
+            const radio = document.querySelector(`input[name="q${i}"][value="${j}"]`);
+            const label = radio ? radio.nextElementSibling : null;
+            
+            if (label) {
+              if (j === correctAnswer) {
+                label.classList.add('correct');
+              } else if (userAnswer === j && userAnswer !== correctAnswer) {
+                label.classList.add('incorrect');
+              }
             }
           });
-          if(user === correct) score++;
+
+          if (userAnswer === correctAnswer) {
+            score++;
+          }
         });
+
         document.getElementById('scoreBox').textContent = `Score: ${score} / ${exercises.length}`;
       });
 
       // Reset
       document.getElementById('resetBtn').addEventListener('click', () => {
+        // إزالة التحديد
         document.querySelectorAll('#exercisesContent input[type=radio]').forEach(r => r.checked = false);
+        
+        // مسح النتيجة
         document.getElementById('scoreBox').textContent = '';
-        // remove highlight classes
-        document.querySelectorAll('#exercisesContent label').forEach(l => { l.classList.remove('correct','incorrect'); });
+        
+        // إزالة الألوان
+        document.querySelectorAll('#exercisesContent label').forEach(l => {
+          l.classList.remove('correct', 'incorrect');
+        });
       });
     }
-
-    
   </script>
 </body>
 </html>
