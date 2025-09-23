@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cooming Soon - English School for Children</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container-fluid px-0">
+        <header class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo-bg" aria-label="EnglishWithNour logo"></a>
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    ☰
+                </button>
+                <!-- Navigation links -->
+                <!-- Navigation links -->
+                <nav id="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="pages/Grammer.html">Grammer</a>
+                    <a href="pages/Vocabulary.html">Vocabulary</a>                   
+                    <a href="ComingSoon.html">Listening</a>
+                    <a href="ComingSoon.html">Writing</a>
+                    <a href="ComingSoon.html">Reading</a>
+                    <a href="ComingSoon.html">Exams</a>
+
+                </nav>
+                <div class="account-btn">Sign in</div>
+            </div>
+        </header>
+
+        <div class="ring-container">
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="coming-soon">Coming Soon</div>
+        </div>
+
+    <script>
+        document.querySelector('.ring-container').addEventListener('click', function() {
+            this.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 300);
+        });
+    </script>
+  <footer class="footer">
+  <div class="footer-container">
+
+    <!-- Brand -->
+    <div class="footer-brand">
+      <h2>EnglishWithNour</h2>
+      <p>Learn English step-by-step with fun, interactive lessons for all levels.</p>
+    </div>
+
+    <!-- Skills -->
+    <div class="footer-skills">
+      <h3>Skills</h3>
+      <div class="skills-columns">
+        <ul>
+          <li><a href="pages/Grammer.html">Grammer</a></li>
+          <li><a href="pages/Vocabulary.html">Vocabulary</a></li>
+        </ul>
+        <ul>
+          <li><a href="ComingSoon.html">Reading</a></li>
+          <li><a href="ComingSoon.html">Writing</a></li>
+        </ul>
+        <ul>
+            <li><a href="ComingSoon.html">Listening</a></li>
+            <li><a href="ComingSoon.html">Exams</a></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 English With Nour. All rights reserved.</p>
+  </div>
+</footer>
+
+
+        
+    </div>
+</body>
+</html>
