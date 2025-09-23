@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>EnglishWithNour - Vocabulary</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="container-fluid px-0">
+    <!-- Navbar (same structure as Grammar) -->
+    <header class="navbar">
+      <div class="container">
+        <a href="../index.html" class="logo-bg" aria-label="EnglishWithNour logo"></a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span aria-hidden="true">☰</span>
+        </button>
+        <nav id="nav-links" aria-label="Main navigation">
+          <a href="../index.html">Home</a>
+          <a href="Grammar.html">Grammar</a>
+          <a href="Vocabulary.html" class="active" aria-current="page">Vocabulary</a>
+          <a href="../ComingSoon.html">Listening</a>
+          <a href="../ComingSoon.html">Writing</a>
+          <a href="../ComingSoon.html">Reading</a>
+          <a href="../ComingSoon.html">Exams</a>
+        </nav>
+        <div class="account-btn" role="button" tabindex="0">Sign in</div>
+      </div>
+    </header>
+
+    <!-- Vocabulary Container -->
+    <div class="vocab-container">
+      <header class="vocab-header">
+        <!-- Level Tabs -->
+        <div class="vocab-tabs" id="levelTabs" role="tablist" aria-label="Vocabulary Levels">
+          <button class="vocab-tab" data-level="A1" role="tab" aria-selected="false" id="tab-A1">A1 Elementary</button>
+          <button class="vocab-tab" data-level="A2" role="tab" aria-selected="false" id="tab-A2">A2 Pre-intermediate</button>
+          <button class="vocab-tab" data-level="B1" role="tab" aria-selected="false" id="tab-B1">B1 Intermediate</button>
+          <button class="vocab-tab" data-level="B2" role="tab" aria-selected="false" id="tab-B2">B2 Upper-intermediate</button>
+          <button class="vocab-tab" data-level="C1" role="tab" aria-selected="false" id="tab-C1">C1 Advanced</button>
+        </div>
+
+        <!-- Search box (search words, not topics) -->
+        <div class="vocab-search-box">
+          <input id="searchInput" type="text" placeholder="Search for words..." aria-label="Search vocabulary words" />
+        </div>
+      </header>
+
+      <main class="container-main">
+        <!-- Level header + progress -->
+        <div class="vocab-level-header">
+          <h2 id="levelTitle">A1 — Elementary</h2>
+          <div class="vocab-progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-labelledby="levelTitle">
+            <i id="progressBar"></i>
+          </div>
+          <div id="progressPct" aria-label="Progress percentage">0%</div>
+        </div>
+
+        <!-- Accordion area -->
+        <div id="vocabAccordion" class="accordion"></div>
+
+        <!-- Empty / loading spot -->
+        <div id="vocabEmptySpot" class="vocab-empty-spot" style="display:none; margin-top:18px;">
+          <i class="fas fa-search" style="font-size: 2rem; color: #00cc55; margin-bottom: 10px;"></i>
+          <p id="emptyMessage">No words found — try a different search term or level.</p>
+        </div>
+      </main>
+    </div>
+
+    <!-- Footer (same as Grammar) -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <h2>EnglishWithNour</h2>
+          <p>Learn English step-by-step with fun, interactive lessons for all levels.</p>
+        </div>
+        <div class="footer-skills">
+          <h3>Skills</h3>
+          <div class="skills-columns">
+            <ul>
+              <li><a href="Grammar.html">Grammar</a></li>
+              <li><a href="Vocabulary.html">Vocabulary</a></li>
+            </ul>
+            <ul>
+              <li><a href="../ComingSoon.html">Reading</a></li>
+              <li><a href="../ComingSoon.html">Writing</a></li>
+            </ul>
+            <ul>
+              <li><a href="../ComingSoon.html">Listening</a></li>
+              <li><a href="../ComingSoon.html">Exams</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 English With Nour. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- vocabulary data -->
+  <script src="../js/VocabularyData.js"></script>
+
+  <script>
+// ---------- Helpers ----------
+function toSlug(text) {
+  return String(text || "").toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+const keyFor = (level, topicKey, wordSlug) => `vocabCompleted::${level}::${topicKey}::${wordSlug}`;
+
+// ---------- Web Speech API Functions ----------
+function speakText(text, accent = 'en-GB') {
+  if (!('speechSynthesis' in window)) {
+    alert('Your browser does not support speech synthesis. Try using Chrome or Edge.');
+    return;
+  }
+  
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = accent;
+  utterance.rate = 0.8;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+  
+  window.speechSynthesis.speak(utterance);
+}
+
+// ---------- Accent System ----------
+let selectedAccent = localStorage.getItem('selectedAccent') || 'en-GB';
+
+// دالة تبديل اللهجة
+function toggleAccent() {
+  selectedAccent = selectedAccent === 'en-GB' ? 'en-US' : 'en-GB';
+  localStorage.setItem('selectedAccent', selectedAccent);
+  updateAccentButton();
+  updateWordIndicators();
+}
+
+// تحديث زر اللهجة
+function updateAccentButton() {
+  const accentBtn = document.getElementById('accentToggle');
+  if (accentBtn) {
+    if (selectedAccent === 'en-GB') {
+      accentBtn.innerHTML = `
+        <img src="https://flagcdn.com/16x12/gb.png" alt="UK" style="width:18px; vertical-align:middle; margin-right:6px;">
+        UK Accent
+      `;
+      accentBtn.className = 'accent-btn uk-accent';
+    } else {
+      accentBtn.innerHTML = `
+        <img src="https://flagcdn.com/16x12/us.png" alt="US" style="width:18px; vertical-align:middle; margin-right:6px;">
+        US Accent
+      `;
+      accentBtn.className = 'accent-btn us-accent';
+    }
+  }
+}
+
+// تحديث المؤشرات البصرية للكلمات
+function updateWordIndicators() {
+  document.querySelectorAll('.speakable-word').forEach(word => {
+    word.classList.remove('uk-mode', 'us-mode');
+    word.classList.add(selectedAccent === 'en-GB' ? 'uk-mode' : 'us-mode');
+  });
+}
+
+// دالة إظهار تأكيد النطق
+function showPronunciationFeedback(element) {
+  const feedback = document.createElement('div');
+  feedback.className = 'pronunciation-feedback';
+  feedback.innerHTML = `
+    <i class="fas fa-volume-up"></i>
+    ${selectedAccent === 'en-GB' ? 'UK' : 'US'}
+  `;
+  
+  element.appendChild(feedback);
+  
+  setTimeout(() => {
+    feedback.remove();
+  }, 1000);
+}
+
+// ---------- State ----------
+let currentLevel = localStorage.getItem('selectedLevelVocab') || 'A1';
+let searchTerm = '';
+
+// ---------- DOM refs ----------
+const accordionContainer = () => document.getElementById('vocabAccordion');
+const emptySpot = () => document.getElementById('vocabEmptySpot');
+const emptyMsg = () => document.getElementById('emptyMessage');
+
+// ---------- Render functions ----------
+function renderTabs() {
+  document.querySelectorAll('.vocab-tab').forEach(tab => {
+    const lvl = tab.dataset.level;
+    tab.classList.toggle('active', lvl === currentLevel);
+    tab.setAttribute('aria-selected', lvl === currentLevel ? 'true' : 'false');
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.vocab-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+
+      currentLevel = lvl;
+      localStorage.setItem('selectedLevelVocab', currentLevel);
+      updateLevelTitle();
+      renderAccordion(searchTerm);
+    });
+
+    tab.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        tab.click();
+      }
+    });
+  });
+}
+
+function updateLevelTitle() {
+  const titleEl = document.getElementById('levelTitle');
+  const labelMap = {
+    A1: 'A1 — A1 Elementary',
+    A2: 'A2 — A2 Pre-intermediate',
+    B1: 'B1 — B1 Intermediate',
+    B2: 'B2 — B2 Upper-intermediate',
+    C1: 'C1 — C1 Advanced'
+  };
+  if (titleEl) titleEl.textContent = labelMap[currentLevel] || currentLevel;
+}
+// ---------- Render functions ----------
+function renderAccordion(filter = '') {
+  if (typeof vocabData === 'undefined') {
+    accordionContainer().innerHTML = '<p class="text-muted">No vocabulary data found (vocabulary.js not loaded).</p>';
+    return;
+  }
+
+  const levelData = vocabData[currentLevel];
+  const container = accordionContainer();
+  container.innerHTML = '';
+
+  if (!levelData || Object.keys(levelData).length === 0) {
+    emptySpot().style.display = 'block';
+    emptyMsg().textContent = 'This level is under development. Check back later.';
+    updateProgress();
+    return;
+  }
+
+  emptySpot().style.display = 'none';
+
+  const searchLower = (filter || '').trim().toLowerCase();
+  let matchedAny = false;
+
+  Object.keys(levelData).forEach((topicKey, idx) => {
+    const topic = levelData[topicKey];
+    
+    let shouldShow = false;
+    
+    if (topic.type === "table" && topic.items) {
+      const itemsFiltered = topic.items.filter(it => {
+        if (!searchLower) return true;
+        // البحث الدقيق في عمود word فقط (مطابقة كاملة أو جزئية)
+        return (it.word && it.word.toLowerCase().includes(searchLower));
+      });
+      shouldShow = itemsFiltered.length > 0;
+      topic.filteredItems = itemsFiltered;
+    } else if (topic.type === "paragraph") {
+      if (!searchLower) {
+        shouldShow = true;
+      } else {
+        // البحث في الكلمات القابلة للنطق فقط داخل الفقرات
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = topic.content;
+        const speakableWords = tempDiv.querySelectorAll('.speakable-word');
+        const words = Array.from(speakableWords).map(word => word.dataset.word.toLowerCase());
+        shouldShow = words.some(word => word.includes(searchLower));
+      }
+    }
+
+    if (!shouldShow) return;
+
+    matchedAny = true;
+
+    const topicId = `collapse-${currentLevel}-${toSlug(topicKey)}-${idx}`;
+    const headingId = `heading-${currentLevel}-${toSlug(topicKey)}-${idx}`;
+
+    let accordionContent = '';
+    if (topic.type === "table" && topic.filteredItems) {
+      const rowsHtml = topic.filteredItems.map(it => {
+        const ukPronunciation = `
+          ${it.uk || ''}
+          ${it.audioUk 
+            ? `<button class="play-btn btn btn-sm btn-outline-primary ms-1" data-src="${it.audioUk}" title="Play UK Audio">🗣 UK</button>` 
+            : `<button class="speak-btn btn btn-sm btn-outline-secondary ms-1" data-text="${it.word}" data-accent="en-GB" title="Speak UK">🗣 UK</button>`
+          }
+        `;
+
+        const usPronunciation = `
+          ${it.us || ''}
+          ${it.audioUs 
+            ? `<button class="play-btn btn btn-sm btn-outline-primary ms-1" data-src="${it.audioUs}" title="Play US Audio">🗣 US</button>` 
+            : `<button class="speak-btn btn btn-sm btn-outline-secondary ms-1" data-text="${it.word}" data-accent="en-US" title="Speak US">🗣 US</button>`
+          }
+        `;
+
+        const exampleWithSpeak = it.example ? `${it.example}` : '';
+
+        return `
+          <tr>
+            <td class="align-middle"><strong>${it.word}</strong></td>
+            <td class="align-middle">${it.arabic || ''}</td>
+            <td class="align-middle">${ukPronunciation}</td>
+            <td class="align-middle">${usPronunciation}</td>
+            <td class="align-middle">${exampleWithSpeak}</td>
+          </tr>
+        `;
+      }).join('');
+
+      accordionContent = `
+        <table class="table-modern">
+          <thead>
+            <tr>
+              <th>Word</th>
+              <th>Arabic</th>
+              <th>
+                <img src="https://flagcdn.com/16x12/gb.png" alt="UK" style="width:18px; vertical-align:middle; margin-right:6px;">
+                UK Pronunciation
+              </th>
+              <th>
+                <img src="https://flagcdn.com/16x12/us.png" alt="US" style="width:18px; vertical-align:middle; margin-right:6px;">
+                US Pronunciation
+              </th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      `;
+    } else if (topic.type === "paragraph") {
+      accordionContent = `<p class="text-muted">Click the title to view this content in the sidebar.</p>`;
+    }
+
+    const accordionItem = document.createElement('div');
+    accordionItem.className = 'accordion-item mb-2';
+
+    const topicSlug = toSlug(topicKey);
+    const chkId = `chk-${currentLevel}-${topicSlug}`;
+    const checked = !!localStorage.getItem(keyFor(currentLevel, topicSlug)) ? 'checked' : '';
+
+accordionItem.innerHTML = `
+  <h2 class="accordion-header" id="${headingId}">
+    <div class="accordion-header-content d-flex justify-content-between align-items-center w-100">
+      
+      <!-- Left side: Checkbox + Titles -->
+      <div class="accordion-titles d-flex flex-column align-items-start">
+        <div class="d-flex align-items-center gap-2">
+          <input class="topic-chk" id="${chkId}" type="checkbox" 
+            data-level="${currentLevel}" data-topic="${topicSlug}" ${checked} />
+          <span class="accordion-title">${topic.title}</span>
+        </div>
+        ${topic.subtitle ? `<span class="accordion-subtitle">${topic.subtitle}</span>` : ""}
+      </div>
+
+      <!-- Right side: Word count + Start button -->
+      <div class="accordion-actions text-end">
+        ${topic.wordCount ? `<div class="accordion-wordcount">عدد الكلمات: ${topic.wordCount}</div>` : ""}
+        <button class="start-btn open-panel-btn" 
+          type="button"
+          data-topic="${topicSlug}" 
+          data-title="${topic.title}">
+          Start
+        </button>
+      </div>
+    </div>
+  </h2>
+
+  <!-- Hidden accordion collapse -->
+  <div id="${topicId}" class="accordion-collapse collapse d-none">
+    <div class="accordion-body p-0">
+      ${accordionContent}
+    </div>
+  </div>
+`;
+
+
+
+    container.appendChild(accordionItem);
+  });
+
+  if (!matchedAny) {
+    emptySpot().style.display = 'block';
+    emptyMsg().textContent = `No words found for "${filter}" in ${currentLevel}.`;
+  } else {
+    emptySpot().style.display = 'none';
+  }
+
+  // باقي الكود كما هو...
+  // Add event listeners to speak buttons
+  document.querySelectorAll('.speak-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const text = btn.getAttribute('data-text');
+      const accent = btn.getAttribute('data-accent');
+      speakText(text, accent);
+    });
+  });
+
+  // Open sidebar with content
+container.querySelectorAll('.open-panel-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const title = btn.dataset.title;
+    const topic = levelData[btn.dataset.topic];
+    let html = `<h3>${title}</h3>`;
+
+    if (topic.type === "table") {
+      // استخدام filteredItems بدل items لعرض النتائج المفلترة فقط
+      const itemsToShow = topic.filteredItems || topic.items;
+      const rowsHtml = itemsToShow.map(it => {
+        const exampleWithSpeak = it.example ? `${it.example}` : '';
+        return `
+          <tr>
+            <td><strong>${it.word}</strong></td>
+            <td>${it.arabic || ''}</td>
+            <td>
+              ${it.uk || ''}
+              ${it.audioUk 
+                ? `<button class="play-btn btn btn-sm btn-outline-primary ms-1" data-src="${it.audioUk}" title="Play UK Audio">🔊 UK</button>` 
+                : `<button class="speak-btn btn btn-sm btn-outline-secondary ms-1" data-text="${it.word}" data-accent="en-GB" title="Speak UK">🗣 UK</button>`
+              }
+            </td>
+            <td>
+              ${it.us || ''}
+              ${it.audioUs 
+                ? `<button class="play-btn btn btn-sm btn-outline-primary ms-1" data-src="${it.audioUs}" title="Play US Audio">🔊 US</button>` 
+                : `<button class="speak-btn btn btn-sm btn-outline-secondary ms-1" data-text="${it.word}" data-accent="en-US" title="Speak US">🗣 US</button>`
+              }
+            </td>
+            <td>${exampleWithSpeak}</td>
+          </tr>
+        `;
+      }).join('');
+
+      html += `
+        <table class="table-modern">
+          <thead>
+            <tr>
+              <th>Word</th>
+              <th>Arabic</th>
+              <th>
+                <img src="https://flagcdn.com/16x12/gb.png" alt="UK" style="width:18px; vertical-align:middle; margin-right:6px;">
+                UK Pronunciation
+              </th>
+              <th>
+                <img src="https://flagcdn.com/16x12/us.png" alt="US" style="width:18px; vertical-align:middle; margin-right:6px;">
+                US Pronunciation
+              </th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      `;
+    }
+
+    else if (topic.type === "paragraph") {
+      html += `
+          <!-- شريط التحكم في اللهجة -->
+          <div class="accent-control-bar">
+            <div class="accent-info">
+              <i class="fas fa-volume-up me-2"></i>
+              <span>Pronunciation Mode:</span>
+            </div>
+            <button id="accentToggle" class="accent-btn uk-accent" onclick="toggleAccent()" title="Switch between UK and US pronunciation">
+              <img src="https://flagcdn.com/16x12/gb.png" alt="UK" style="width:18px; vertical-align:middle; margin-right:6px;">
+              UK Accent
+            </button>
+          </div>
+          
+          <div class="paragraph-content" id="paragraphContent-${btn.dataset.topic}">
+            ${topic.content}
+          </div>
+          
+          <!-- مؤشر المساعدة -->
+          <div class="help-indicator">
+            <small><i class="fas fa-info-circle me-1"></i>Click on green words to hear pronunciation. Hover for meaning.</small>
+          </div>
+      `;
+    }
+
+    else {
+      html += `<p class="text-muted">No layout defined for this topic.</p>`;
+    }
+
+    document.getElementById('topicPanelBody').innerHTML = html;
+    document.getElementById('topicPanel').classList.add('open');
+    
+    // Add event listeners to speak buttons in the panel
+    document.querySelectorAll('#topicPanelBody .speak-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const text = btn.getAttribute('data-text');
+        const accent = btn.getAttribute('data-accent');
+        speakText(text, accent);
+      });
+    });
+
+    // إضافة مستمعي الأحداث للكلمات القابلة للنطق
+    addSpeakableWordListeners();
+  });
+});
+
+  // Close sidebar
+  document.getElementById('closePanel').addEventListener('click', () => {
+    document.getElementById('topicPanel').classList.remove('open');
+  });
+
+  // Close if click outside content
+  document.getElementById('topicPanel').addEventListener('click', e => {
+    if (e.target.id === 'topicPanel') {
+      document.getElementById('topicPanel').classList.remove('open');
+    }
+  });
+
+  // attach checkbox listeners for topics
+  container.querySelectorAll('input.topic-chk').forEach(chk => {
+    chk.addEventListener('change', () => {
+      const L = chk.dataset.level;
+      const T = chk.dataset.topic;
+      if (chk.checked) {
+        localStorage.setItem(keyFor(L, T), '1');
+      } else {
+        localStorage.removeItem(keyFor(L, T));
+      }
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+}
+
+// ---------- Search handling ----------
+let searchTimeout;
+function initSearch() {
+  const input = document.getElementById('searchInput');
+  if (!input) return;
+  input.value = '';
+  input.addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      searchTerm = e.target.value.trim();
+      renderAccordion(searchTerm);
+    }, 250);
+  });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      input.value = '';
+      searchTerm = '';
+      renderAccordion('');
+    }
+  });
+}
+
+// ---------- Progress ----------
+function updateProgress() {
+  const levelObj = vocabData && vocabData[currentLevel] ? vocabData[currentLevel] : {};
+  const topics = Object.keys(levelObj);
+  let total = topics.length, completed = 0;
+
+  topics.forEach(topicKey => {
+    const key = keyFor(currentLevel, toSlug(topicKey));
+    if (localStorage.getItem(key)) completed++;
+  });
+
+  const pct = total ? Math.round((completed / total) * 100) : 0;
+
+  const progressBar = document.getElementById('progressBar');
+  const progressPct = document.getElementById('progressPct');
+  const progressContainer = document.querySelector('.vocab-progress');
+
+  if (progressBar) progressBar.style.width = pct + '%';
+  if (progressContainer) progressContainer.setAttribute('aria-valuenow', pct);
+  if (progressPct) progressPct.textContent = pct + '%';
+}
+
+// ---------- Init page ----------
+function initPage() {
+  document.querySelectorAll('.vocab-tab').forEach(t => {
+    if (t.dataset.level === currentLevel) {
+      t.classList.add('active');
+      t.setAttribute('aria-selected', 'true');
+    } else {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    }
+  });
+
+  updateLevelTitle();
+  renderTabs();
+  initSearch();
+  renderAccordion('');
+}
+
+// DOM ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPage);
+} else {
+  initPage();
+}
+
+// Expose for debugging if needed
+window.vocabDebug = {
+  data: () => window.vocabData,
+  render: renderAccordion,
+  updateProgress
+};
+
+// ========== النظام المتقدم للكلمات القابلة للنطق ==========
+
+// دالة إضافة مستمعي الأحداث للكلمات القابلة للنطق
+function addSpeakableWordListeners() {
+  // تحديث زر اللهجة والمؤشرات
+  updateAccentButton();
+  updateWordIndicators();
+  
+  document.querySelectorAll('#topicPanelBody .speakable-word').forEach(word => {
+    // إضافة كلاس اللهجة الحالية
+    word.classList.add(selectedAccent === 'en-GB' ? 'uk-mode' : 'us-mode');
+    
+    word.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // إضافة أنيميشن
+      this.classList.add('speaking');
+      setTimeout(() => {
+        this.classList.remove('speaking');
+      }, 600);
+      
+      // نطق الكلمة باللهجة المختارة
+      const wordText = this.dataset.word;
+      speakText(wordText, selectedAccent);
+      
+      // إظهار مؤشر النطق
+      showPronunciationFeedback(this);
+    });
+  });
+}
+
+// CSS للنظام المتقدم
+const advancedAccentStyle = document.createElement('style');
+advancedAccentStyle.textContent = `
+  /* شريط التحكم في اللهجة */
+  .accent-control-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background:#00cc55;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(5px);
+  }
+  
+  .accent-info {
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+  }
+  
+  .accent-info i {
+    color: white;
+  }
+  
+  /* أزرار اللهجة */
+  .accent-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .uk-accent {
+    background: rgba(0, 102, 204, 0.1);
+    border-color: #0066cc;
+    color: #0066cc;
+  }
+  
+  .uk-accent:hover {
+    background: #0066cc;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  }
+  
+  .us-accent {
+    background: rgba(220, 53, 69, 0.1);
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+  
+  .us-accent:hover {
+    background: #dc3545;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  }
+  
+  /* مؤشرات الكلمات حسب اللهجة */
+  .speakable-word.uk-mode {
+    border-bottom-color: #0066cc;
+    position: relative;
+  }
+  
+  .speakable-word.us-mode {
+    border-bottom-color: #dc3545;
+    position: relative;
+  }
+  
+  .speakable-word.uk-mode::after {
+    content: '🇬🇧';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .speakable-word.us-mode::after {
+    content: '🇺🇸';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .speakable-word:hover::after {
+    opacity: 1;
+  }
+  
+  /* تأكيد النطق */
+  .pronunciation-feedback {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00cc55;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    z-index: 1000;
+    animation: feedbackPop 1s ease-out;
+  }
+  
+  @keyframes feedbackPop {
+    0% { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.8); }
+    50% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.1); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-5px) scale(1); }
+  }
+  
+  /* مؤشر المساعدة */
+  .help-indicator {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  
+  .help-indicator small {
+    color: #00cc55;
+    font-style: italic;
+  }
+  
+  .help-indicator i {
+    color: #00cc55;
+  }
+  
+  /* تحسينات للموبايل */
+  @media (max-width: 768px) {
+    .accent-control-bar {
+      flex-direction: column;
+      gap: 10px;
+      padding: 12px;
+    }
+    
+    .accent-btn {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+    }
+    
+    .pronunciation-feedback {
+      font-size: 10px;
+      padding: 3px 6px;
+    }
+  }
+  
+
+
+  .paragraph-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 2px solid #00cc55;
+    padding: 25px;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #2c3e50;
+    position: relative;
+  }
+
+  .speakable-word {
+    color: #00cc55;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    text-decoration: none;
+    border-bottom: 2px dotted #00cc55;
+    display: inline-block;
+  }
+
+  .speakable-word:hover {
+    background: #00cc55 !important;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 204, 85, 0.3);
+  }
+
+  .word-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-bottom: 5px;
+  }
+
+  .word-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #2c3e50;
+  }
+
+  .speakable-word:hover .word-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .speaking {
+    animation: speakPulse 0.6s ease-in-out !important;
+    background: #00cc55 !important;
+    color: white !important;
+  }
+
+  @keyframes speakPulse {
+    0%, 100% { 
+      transform: scale(1); 
+      box-shadow: 0 0 0 0 rgba(0, 204, 85, 0.7);
+    }
+    50% { 
+      transform: scale(1.05); 
+      box-shadow: 0 0 0 10px rgba(0, 204, 85, 0);
+    }
+  }
+`;
+document.head.appendChild(advancedAccentStyle);
+
+// باقي الكود الموجود
+document.querySelectorAll('.play-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const src = btn.dataset.src;
+    if (src) {
+      const audio = new Audio(src);
+      audio.play();
+    }
+  });
+});
+
+document.querySelectorAll('.play-btn, .speak-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    this.style.animation = 'pulse 0.3s ease-in-out';
+    setTimeout(() => {
+      this.style.animation = '';
+    }, 300);
+  });
+});
+
+document.querySelectorAll('.table-modern tbody tr').forEach(row => {
+  row.addEventListener('click', function() {
+    this.style.transform = 'scale(1.01)';
+    setTimeout(() => {
+      this.style.transform = '';
+    }, 150);
+  });
+});
+
+</script>
+
+
+    
+<!-- Fullscreen Drawer -->
+<div id="topicPanel" class="topic-panel">
+  <div class="topic-panel-content">
+    <button id="closePanel" class="btn btn-danger mb-3">✖ Close</button>
+    <div id="topicPanelBody"></div>
+  </div>
+</div>
+</body>
+</html>
