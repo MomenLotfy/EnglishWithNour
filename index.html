@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- تأكد من وجود viewport meta tag بهذه الطريقة -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EnglishWithNour - English School for All Ages</title>
     <!-- Bootstrap CSS -->
@@ -14,18 +15,81 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- Bottom Navigation (mobile/tablet) -->
+   <nav class="bottom-nav">
+  <a href="index.html" class="bottom-nav-link active" aria-label="Home">
+    <ion-icon name="home-outline"></ion-icon>
+    <span>Home</span>
+    <span class="ripple"></span>
+  </a>
+
+  <a href="pages/Grammar.html" class="bottom-nav-link" aria-label="Grammar">
+    <ion-icon name="book-outline"></ion-icon>
+    <span>Grammar</span>
+    <span class="ripple"></span>
+  </a>
+
+  <a href="pages/Vocabulary.html" class="bottom-nav-link" aria-label="Vocabulary">
+    <ion-icon name="list-outline"></ion-icon>
+    <span>Vocab</span>
+    <span class="ripple"></span>
+  </a>
+
+  <a href="ComingSoon.html" class="bottom-nav-link" aria-label="Exams">
+    <ion-icon name="document-text-outline"></ion-icon>
+    <span>Exams</span>
+    <span class="ripple"></span>
+  </a>
+   <a href="#" class="bottom-nav-link sidebar-toggle" aria-label="Menu">
+  <ion-icon name="menu-outline"></ion-icon>
+  <span>Menu</span>
+  </a>
+</nav><!-- Overlay -->
+<div id="overlay" class="overlay"></div>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="sidebar">
+  <!-- Header -->
+  <div class="sidebar-header">
+    <h2 class="logo">EnglishWithNour</h2>
+    <button class="close-btn" id="close-sidebar">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="sidebar-nav">
+    <a href="index.html"><ion-icon name="home-outline"></ion-icon> Home</a>
+    <a href="pages/Grammar.html"><ion-icon name="book-outline"></ion-icon> Grammar</a>
+    <a href="pages/Vocabulary.html"><ion-icon name="list-outline"></ion-icon> Vocabulary</a>
+    <a href="ComingSoon.html"><ion-icon name="headset-outline"></ion-icon> Listening</a>
+    <a href="ComingSoon.html"><ion-icon name="create-outline"></ion-icon> Writing</a>
+    <a href="ComingSoon.html"><ion-icon name="library-outline"></ion-icon> Reading</a>
+    <a href="ComingSoon.html"><ion-icon name="document-text-outline"></ion-icon> Exams</a>
+  </nav>
+
+  <!-- Footer -->
+  <div class="sidebar-footer">
+    <p class="tagline">
+      Learn English step-by-step with fun and interactive lessons designed for Arabic speakers of all ages.
+    </p>
+    <div class="social-icons">
+      <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+      <a href="#"><ion-icon name="logo-youtube"></ion-icon></a>
+      <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+    </div>
+  </div>
+</aside>
+
     <div class="container-fluid px-0">
         <header class="navbar">
             <div class="container">
               <a href="index.html" class="logo-bg" aria-label="EnglishWithNour logo"></a>
-                <!-- Hamburger Menu Button -->
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    ☰
-                </button>
+           
                 <!-- Navigation links -->
                 <nav id="nav-links">
                     <a href="index.html">Home</a>
-                    <a href="pages/Grammer.html">Grammer</a>
+                    <a href="pages/Grammar.html">Grammar</a>
                     <a href="pages/Vocabulary.html">Vocabulary</a>                   
                     <a href="ComingSoon.html">Listening</a>
                     <a href="ComingSoon.html">Writing</a>
@@ -35,6 +99,7 @@
                 </nav>
                 <div class="account-btn" >Sign in</div>
             </div>
+            
         </header>
 
         <section class="hero">
@@ -46,13 +111,15 @@
                             <ul>
                               <li>✔ Clear explanations in Arabic for better understanding</li>
                               <li>✔ Step-by-step lessons from beginner to advanced</li>
-                              <li>✔ Interactive exercises to practice grammar, reading & writing</li>
+                              <li>✔ Interactive exercises to practice Grammar, reading & writing</li>
                               <li>✔ Supportive environment with small group classes</li>
                             </ul>
-                            <button class="cta">TRY A FREE LESSON</button>
+                            <button class="cta" onclick="window.location.href='pages/booking-system.html'">
+                              TRY A FREE LESSON
+                            </button>
                         </div>
                         <div class="hero-image">
-                            <img id="hero-image" src="images/character-1.png" alt="Kid with Laptop" />
+                            <img src="images/character-1.png" alt="Kid with Laptop" />
                         </div>
                     </div>
                 </div>
@@ -78,7 +145,7 @@
   </div>
 
   <div class="feature-card">
-    <h3>🌍 For All Ages</h3>
+    <h3><ion-icon name="globe-outline"></ion-icon> For All Ages</h3>
     <p>Suitable for All Ages, students, and adults at any learning stage.</p>
   </div>
 </div>
@@ -91,11 +158,11 @@
           <h1>Select a Skill to Learn English</h1>
 
           <div class="cards-container">
-            <div class="card grammar">
-              <img src="images/card-grammer.png" alt="Grammer" />
-              <h3>Grammer</h3>
-              <p>Learn English grammar through fun and interactive lessons.</p>
-              <a href="pages/Grammer.html" class="card-btn">Learn more →</a>
+            <div class="card Grammar">
+              <img src="images/card-Grammar.png" alt="Grammar" />
+              <h3>Grammar</h3>
+              <p>Learn English Grammar through fun and interactive lessons.</p>
+              <a href="pages/Grammar.html" class="card-btn">Learn more →</a>
             </div>
             <div class="card Vocabulary">
               <img src="images/card-vocabulary.png" alt="Vocabulary" />
@@ -168,8 +235,8 @@
       <h3>Explore</h3>
       <div class="skills-columns">
         <ul>
-          <li><a href="pages/Grammer.html">Grammer</a></li>
-          <li><a href="pages/Vocabulary.html">Vocabulary</a></li>
+          <li><a href="pages/Grammar.html">Grammar</a></li>
+          <li><a href="ComingSoon.html">Vocabulary</a></li>
         </ul>
         <ul>
           <li><a href="ComingSoon.html">Reading</a></li>
@@ -203,8 +270,56 @@
 
         
     </div>
+<script>
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  const openBtn = document.querySelector(".sidebar-toggle");
+  const closeBtn = document.getElementById("close-sidebar");
+
+  // فتح السايد بار
+  openBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+  });
+
+  // إغلاق بالزر
+  closeBtn.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+  });
+
+  // إغلاق بالضغط على الخلفية
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+  });
+</script>
+
 
     <script>
+
+
+  const bottomLinks = document.querySelectorAll('.bottom-nav-link');
+
+bottomLinks.forEach(link => {
+  link.addEventListener('click', function(e) {
+    bottomLinks.forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+
+    // Ripple effect
+    const ripple = this.querySelector('.ripple');
+    ripple.style.width = ripple.style.height = Math.max(this.offsetWidth, this.offsetHeight) + 'px';
+    ripple.style.left = e.clientX - this.getBoundingClientRect().left - ripple.offsetWidth/2 + 'px';
+    ripple.style.top = e.clientY - this.getBoundingClientRect().top - ripple.offsetHeight/2 + 'px';
+    ripple.classList.remove('animate');
+    void ripple.offsetWidth; // trigger reflow
+    ripple.classList.add('animate');
+  });
+});
+
+
+
 // === Scroll Animation ===
 const videoSection = document.getElementById("video-section");
 const observer = new IntersectionObserver(entries => {
@@ -222,9 +337,8 @@ const card = document.querySelector(".glass-card");
 
 
 </script>
-
     <script>
-        const images = ["images/character-1.png", "images/character-2.png"];
+        const images = ["", ""];
         let index = 0;
         const imageElement = document.getElementById("hero-image");
         setInterval(() => {
@@ -232,13 +346,7 @@ const card = document.querySelector(".glass-card");
             imageElement.src = images[index];
         }, 1400);
 
-        // Hamburger Menu Toggle
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('nav-links');
 
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
     </script>
 </body>
 </html>
