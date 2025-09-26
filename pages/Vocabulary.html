@@ -9,20 +9,95 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <link rel="stylesheet" href="../css/style.css" />
+  
+  <style>
+    /* إضافة الكلاس no-animation لإزالة الحركة عند بدء التشغيل */
+    .topic-panel.no-animation {
+      transition: none !important;
+    }
+    
+    .topic-panel.no-animation .topic-panel-content {
+      transition: none !important;
+    }
+  </style>
 </head>
 <body>
+   <!-- Bottom Navigation (mobile/tablet) -->
+   <nav class="bottom-nav">
+  <a href="../index.html" class="bottom-nav-link active" aria-label="Home">
+    <ion-icon name="home-outline"></ion-icon>
+    <span>Home</span>
+    <span class="ripple"></span>
+  </a>
+
+  <a href="Grammar.html" class="bottom-nav-link" aria-label="Grammar">
+    <ion-icon name="book-outline"></ion-icon>
+    <span>Grammar</span>
+    <span class="ripple"></span>
+  </a>
+
+  <a href="Vocabulary.html" class="bottom-nav-link" aria-label="Vocabulary">
+    <ion-icon name="list-outline"></ion-icon>
+    <span>Vocab</span>
+    <span class="ripple"></span>
+  </a>
+
+  <a href="../ComingSoon.html" class="bottom-nav-link" aria-label="Exams">
+    <ion-icon name="document-text-outline"></ion-icon>
+    <span>Exams</span>
+    <span class="ripple"></span>
+  </a>
+   <a href="#" class="bottom-nav-link sidebar-toggle" aria-label="Menu">
+  <ion-icon name="menu-outline"></ion-icon>
+  <span>Menu</span>
+  </a>
+</nav><!-- Overlay -->
+<div id="overlay" class="overlay"></div>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="sidebar">
+  <!-- Header -->
+  <div class="sidebar-header">
+    <h2 class="logo">EnglishWithNour</h2>
+    <button class="close-btn" id="close-sidebar">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="sidebar-nav">
+    <a href="../index.html"><ion-icon name="home-outline"></ion-icon> Home</a>
+    <a href="Grammar.html"><ion-icon name="book-outline"></ion-icon> Grammar</a>
+    <a href="Vocabulary.html"><ion-icon name="list-outline"></ion-icon> Vocabulary</a>
+    <a href="../ComingSoon.html"><ion-icon name="headset-outline"></ion-icon> Listening</a>
+    <a href="../ComingSoon.html"><ion-icon name="create-outline"></ion-icon> Writing</a>
+    <a href="../ComingSoon.html"><ion-icon name="library-outline"></ion-icon> Reading</a>
+    <a href="../ComingSoon.html"><ion-icon name="document-text-outline"></ion-icon> Exams</a>
+  </nav>
+
+  <!-- Footer -->
+  <div class="sidebar-footer">
+    <p class="tagline">
+      Learn English step-by-step with fun and interactive lessons designed for Arabic speakers of all ages.
+    </p>
+    <div class="social-icons">
+      <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+      <a href="#"><ion-icon name="logo-youtube"></ion-icon></a>
+      <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+    </div>
+  </div>
+</aside>
   <div class="container-fluid px-0">
     <!-- Navbar (same structure as Grammar) -->
     <header class="navbar">
       <div class="container">
         <a href="../index.html" class="logo-bg" aria-label="EnglishWithNour logo"></a>
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-          <span aria-hidden="true">☰</span>
-        </button>
         <nav id="nav-links" aria-label="Main navigation">
           <a href="../index.html">Home</a>
-          <a href="Grammer.html">Grammer</a>
+          <a href="Grammar.html">Grammar</a>
           <a href="Vocabulary.html" class="active" aria-current="page">Vocabulary</a>
           <a href="../ComingSoon.html">Listening</a>
           <a href="../ComingSoon.html">Writing</a>
@@ -74,57 +149,192 @@
 
     <!-- Footer (same as Grammar) -->
     <footer class="footer">
-  <div class="footer-container">
+      <div class="footer-container">
 
-    <!-- Brand -->
-    <div class="footer-brand">
-      <h2>EnglishWithNour</h2>
-      <p>Learn English step-by-step with fun and interactive lessons designed for Arabic speakers of all ages.</p>
-    </div>
+        <!-- Brand -->
+        <div class="footer-brand">
+          <h2>EnglishWithNour</h2>
+          <p>Learn English step-by-step with fun and interactive lessons designed for Arabic speakers of all ages.</p>
+        </div>
 
-    <!-- Skills -->
-    <div class="footer-skills">
-      <h3>Explore</h3>
-      <div class="skills-columns">
-        <ul>
-          <li><a href="Grammer.html">Grammer</a></li>
-          <li><a href="Vocabulary.html">Vocabulary</a></li>
-        </ul>
-        <ul>
-          <li><a href="../ComingSoon.html">Reading</a></li>
-          <li><a href="../ComingSoon.html">Writing</a></li>
-        </ul>
-        <ul>
-          <li><a href="../ComingSoon.html">Listening</a></li>
-          <li><a href="../ComingSoon.html">Exams</a></li>
-        </ul>
+        <!-- Skills -->
+        <div class="footer-skills">
+          <h3>Explore</h3>
+          <div class="skills-columns">
+            <ul>
+              <li><a href="Grammar.html">Grammar</a></li>
+              <li><a href="Vocabulary.html">Vocabulary</a></li>
+            </ul>
+            <ul>
+              <li><a href="../ComingSoon.html">Reading</a></li>
+              <li><a href="../ComingSoon.html">Writing</a></li>
+            </ul>
+            <ul>
+              <li><a href="../ComingSoon.html">Listening</a></li>
+              <li><a href="../ComingSoon.html">Exams</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div class="footer-social">
+          <h3>Follow Us</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
       </div>
-    </div>
 
-    <!-- Social -->
-    <div class="footer-social">
-      <h3>Follow Us</h3>
-      <div class="social-icons">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+      <div class="footer-bottom">
+        <p>© 2025 English With Nour. All rights reserved.</p>
       </div>
-    </div>
-
-  </div>
-
-  <div class="footer-bottom">
-    <p>© 2025 English With Nour. All rights reserved.</p>
-  </div>
-</footer>
+    </footer>
   </div>
 
   <!-- Bootstrap JS bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <!-- vocabulary data -->
   <script src="../js/VocabularyData.js"></script>
+   <script>
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  const openBtn = document.querySelector(".sidebar-toggle");
+  const closeBtn = document.getElementById("close-sidebar");
+
+  // فتح السايد بار
+  openBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+  });
+
+  // إغلاق بالزر
+  closeBtn.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+  });
+
+  // إغلاق بالضغط على الخلفية
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+  });
+</script>
+
 
   <script>
+    
+    // ---------- Sidebar History Management ----------
+    let sidebarHistoryState = null;
+    let isRefreshRestore = false; // فلاج لتتبع الاستعادة من الريفرش
+
+    function openSidebar(withAnimation = true, isRestore = false) {
+      const panel = document.getElementById('topicPanel');
+      
+      // إزالة no-animation إذا كانت موجودة للسماح بالحركة
+      if (withAnimation) {
+        panel.classList.remove('no-animation');
+      } else {
+        panel.classList.add('no-animation');
+      }
+      
+      panel.classList.add('open');
+      
+      // Add state to history only if not a restore and not already added
+      if (!isRestore && !sidebarHistoryState) {
+        sidebarHistoryState = { sidebarOpen: true };
+        history.pushState(sidebarHistoryState, '');
+        
+        // حفظ حالة السايدبار فقط عند الفتح الطبيعي (ليس الاستعادة)
+        localStorage.setItem('sidebarOpen', 'true');
+      }
+      
+      // إزالة no-animation بعد فترة قصيرة لتجنب المشاكل
+      if (!withAnimation) {
+        setTimeout(() => {
+          panel.classList.remove('no-animation');
+        }, 100);
+      }
+    }
+
+    function closeSidebar(clearStorage = true) {
+      const panel = document.getElementById('topicPanel');
+      panel.classList.remove('open');
+      
+      // Remove the state from history if it exists
+      if (sidebarHistoryState) {
+        // Use replaceState to avoid adding more history entries
+        history.replaceState(null, '');
+        sidebarHistoryState = null;
+      }
+      
+      // إزالة حالة السايدبار من localStorage فقط إذا كان مطلوباً
+      if (clearStorage) {
+        localStorage.removeItem('sidebarOpen');
+        localStorage.removeItem('sidebarContent');
+        localStorage.removeItem('sidebarTitle');
+        localStorage.removeItem('sidebarTopic');
+      }
+    }
+
+    // حفظ محتوى السايدبار
+    function saveSidebarContent(title, topic, content) {
+      localStorage.setItem('sidebarTitle', title);
+      localStorage.setItem('sidebarTopic', topic);
+      localStorage.setItem('sidebarContent', content);
+    }
+
+    // استرجاع محتوى السايدبار
+    function restoreSidebarContent() {
+      const title = localStorage.getItem('sidebarTitle');
+      const topic = localStorage.getItem('sidebarTopic');
+      const content = localStorage.getItem('sidebarContent');
+      
+      if (title && topic && content) {
+        document.getElementById('topicPanelBody').innerHTML = content;
+        return true;
+      }
+      return false;
+    }
+
+    // دالة للتحقق من كون الصفحة تم تحميلها من الريفرش أم من التنقل
+    function isPageRefreshed() {
+      return performance.navigation.type === performance.navigation.TYPE_RELOAD;
+    }
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function(event) {
+      const panel = document.getElementById('topicPanel');
+      
+      if (panel.classList.contains('open')) {
+        // Close sidebar when back button is pressed without clearing storage
+        closeSidebar(false);
+        
+        // منع المزيد من التنقل للخلف
+        event.preventDefault();
+        return;
+      }
+    });
+
+    // التعامل مع حالة مغادرة الصفحة
+    window.addEventListener('beforeunload', function() {
+      const panel = document.getElementById('topicPanel');
+      // إذا كان السايدبار مفتوحاً، احفظ الحالة للريفرش
+      if (!panel.classList.contains('open')) {
+        // إذا كان السايدبار مغلق، امسح البيانات المحفوظة
+        localStorage.removeItem('sidebarOpen');
+        localStorage.removeItem('sidebarContent');
+        localStorage.removeItem('sidebarTitle');
+        localStorage.removeItem('sidebarTopic');
+      }
+    });
+
+    
+
+    
 // ---------- Helpers ----------
 function toSlug(text) {
   return String(text || "").toLowerCase()
@@ -150,6 +360,7 @@ function speakText(text, accent = 'en-GB') {
   
   window.speechSynthesis.speak(utterance);
 }
+
 
 // ---------- Accent System ----------
 let selectedAccent = localStorage.getItem('selectedAccent') || 'en-GB';
@@ -255,11 +466,44 @@ function updateLevelTitle() {
   };
   if (titleEl) titleEl.textContent = labelMap[currentLevel] || currentLevel;
 }
+
 // ---------- Render functions ----------
 function renderAccordion(filter = '') {
   if (typeof vocabData === 'undefined') {
-    accordionContainer().innerHTML = '<p class="text-muted">No vocabulary data found (vocabulary.js not loaded).</p>';
-    return;
+    // بيانات وهمية للاختبار
+    window.vocabData = {
+      A1: {
+        greetings: {
+          title: "Greetings & Introductions",
+          subtitle: "Basic greetings and how to introduce yourself",
+          wordCount: 15,
+          type: "table",
+          items: [
+            { word: "Hello", arabic: "مرحبا", uk: "/həˈləʊ/", us: "/həˈloʊ/", example: "Hello, how are you?" },
+            { word: "Good morning", arabic: "صباح الخير", uk: "/ɡʊd ˈmɔːnɪŋ/", us: "/ɡʊd ˈmɔːrnɪŋ/", example: "Good morning, everyone!" },
+            { word: "Thank you", arabic: "شكرا لك", uk: "/θæŋk juː/", us: "/θæŋk juː/", example: "Thank you for your help." }
+          ]
+        },
+        family: {
+          title: "Family Members",
+          subtitle: "Learn about family relationships",
+          wordCount: 12,
+          type: "paragraph",
+          content: `
+            <p>Family is very important in every culture. Here are some basic family words:</p>
+            <p>My <span class="speakable-word" data-word="mother" title="أم - الوالدة">mother</span> is very kind. 
+            My <span class="speakable-word" data-word="father" title="أب - الوالد">father</span> works hard. 
+            I have a <span class="speakable-word" data-word="brother" title="أخ - الأخ">brother</span> and a 
+            <span class="speakable-word" data-word="sister" title="أخت - الأخت">sister</span>.</p>
+            <p>My <span class="speakable-word" data-word="grandmother" title="جدة - الجدة">grandmother</span> tells 
+            great stories, and my <span class="speakable-word" data-word="grandfather" title="جد - الجد">grandfather</span> 
+            is very wise.</p>
+          `
+        }
+      }
+    };
+    
+    accordionContainer().innerHTML = '<p class="text-muted">Loading vocabulary data...</p>';
   }
 
   const levelData = vocabData[currentLevel];
@@ -409,8 +653,6 @@ accordionItem.innerHTML = `
   </div>
 `;
 
-
-
     container.appendChild(accordionItem);
   });
 
@@ -421,7 +663,6 @@ accordionItem.innerHTML = `
     emptySpot().style.display = 'none';
   }
 
-  // باقي الكود كما هو...
   // Add event listeners to speak buttons
   document.querySelectorAll('.speak-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -436,58 +677,57 @@ accordionItem.innerHTML = `
 container.querySelectorAll('.open-panel-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const title = btn.dataset.title;
-    const topic = levelData[btn.dataset.topic];
+    const topicKey = btn.dataset.topic;
+    const topic = levelData[Object.keys(levelData).find(k => toSlug(k) === topicKey)];
     let html = `<h3>${title}</h3>`;
 
-    if (topic.type === "table") {
-      // استخدام filteredItems بدل items لعرض النتائج المفلترة فقط
-      const itemsToShow = topic.filteredItems || topic.items;
-      const rowsHtml = itemsToShow.map(it => {
-        const exampleWithSpeak = it.example ? `${it.example}` : '';
-        return `
-          <tr>
-            <td><strong>${it.word}</strong></td>
-            <td>${it.arabic || ''}</td>
-            <td>
-              ${it.uk || ''}
-              ${it.audioUk 
-                ? `<button class="play-btn btn btn-sm btn-outline-primary ms-1" data-src="${it.audioUk}" title="Play UK Audio">🔊 UK</button>` 
-                : `<button class="speak-btn btn btn-sm btn-outline-secondary ms-1" data-text="${it.word}" data-accent="en-GB" title="Speak UK">🗣 UK</button>`
-              }
-            </td>
-            <td>
-              ${it.us || ''}
-              ${it.audioUs 
-                ? `<button class="play-btn btn btn-sm btn-outline-primary ms-1" data-src="${it.audioUs}" title="Play US Audio">🔊 US</button>` 
-                : `<button class="speak-btn btn btn-sm btn-outline-secondary ms-1" data-text="${it.word}" data-accent="en-US" title="Speak US">🗣 US</button>`
-              }
-            </td>
-            <td>${exampleWithSpeak}</td>
-          </tr>
-        `;
-      }).join('');
+  if (topic.type === "table") {
+  const itemsToShow = topic.filteredItems || topic.items;
+  const rowsHtml = itemsToShow.map(it => {
+    const exampleWithSpeak = it.example ? `${it.example}` : '';
+    return `
+      <tr>
+        <td data-label="Word"><strong>${it.word}</strong></td>
+        <td data-label="Arabic">${it.arabic || ''}</td>
+        <td data-label="UK Pronunciation">
+          ${it.uk || ''}
+          ${it.audioUk 
+            ? `<button class="play-btn btn btn-sm btn-outline-primary ms-1" data-src="${it.audioUk}" title="Play UK Audio">🔊 UK</button>` 
+            : `<button class="speak-btn btn btn-sm btn-outline-secondary ms-1" data-text="${it.word}" data-accent="en-GB" title="Speak UK">🗣 UK</button>`}
+        </td>
+        <td data-label="US Pronunciation">
+          ${it.us || ''}
+          ${it.audioUs 
+            ? `<button class="play-btn btn btn-sm btn-outline-primary ms-1" data-src="${it.audioUs}" title="Play US Audio">🔊 US</button>` 
+            : `<button class="speak-btn btn btn-sm btn-outline-secondary ms-1" data-text="${it.word}" data-accent="en-US" title="Speak US">🗣 US</button>`}
+        </td>
+        <td data-label="Example">${exampleWithSpeak}</td>
+      </tr>
+    `;
+  }).join('');
 
-      html += `
-        <table class="table-modern">
-          <thead>
-            <tr>
-              <th>Word</th>
-              <th>Arabic</th>
-              <th>
-                <img src="https://flagcdn.com/16x12/gb.png" alt="UK" style="width:18px; vertical-align:middle; margin-right:6px;">
-                UK Pronunciation
-              </th>
-              <th>
-                <img src="https://flagcdn.com/16x12/us.png" alt="US" style="width:18px; vertical-align:middle; margin-right:6px;">
-                US Pronunciation
-              </th>
-              <th>Example</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-      `;
-    }
+  html += `
+    <table class="table-modern">
+      <thead>
+        <tr>
+          <th>Word</th>
+          <th>Arabic</th>
+          <th>
+            <img src="https://flagcdn.com/16x12/gb.png" alt="UK" style="width:18px; vertical-align:middle; margin-right:6px;">
+            UK Pronunciation
+          </th>
+          <th>
+            <img src="https://flagcdn.com/16x12/us.png" alt="US" style="width:18px; vertical-align:middle; margin-right:6px;">
+            US Pronunciation
+          </th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>${rowsHtml}</tbody>
+    </table>
+  `;
+}
+
 
     else if (topic.type === "paragraph") {
       html += `
@@ -503,7 +743,7 @@ container.querySelectorAll('.open-panel-btn').forEach(btn => {
             </button>
           </div>
           
-          <div class="paragraph-content" id="paragraphContent-${btn.dataset.topic}">
+          <div class="paragraph-content" id="paragraphContent-${topicKey}">
             ${topic.content}
           </div>
           
@@ -519,7 +759,12 @@ container.querySelectorAll('.open-panel-btn').forEach(btn => {
     }
 
     document.getElementById('topicPanelBody').innerHTML = html;
-    document.getElementById('topicPanel').classList.add('open');
+    
+    // حفظ محتوى السايدبار قبل فتحه
+    saveSidebarContent(title, topicKey, html);
+    
+    // Use the new openSidebar function with animation (not a restore)
+    openSidebar(true, false);
     
     // Add event listeners to speak buttons in the panel
     document.querySelectorAll('#topicPanelBody .speak-btn').forEach(btn => {
@@ -536,15 +781,15 @@ container.querySelectorAll('.open-panel-btn').forEach(btn => {
   });
 });
 
-  // Close sidebar
+  // Close sidebar using the new closeSidebar function
   document.getElementById('closePanel').addEventListener('click', () => {
-    document.getElementById('topicPanel').classList.remove('open');
+    closeSidebar(true); // امسح البيانات المحفوظة عند الإغلاق اليدوي
   });
 
   // Close if click outside content
   document.getElementById('topicPanel').addEventListener('click', e => {
     if (e.target.id === 'topicPanel') {
-      document.getElementById('topicPanel').classList.remove('open');
+      closeSidebar(true); // امسح البيانات المحفوظة عند الإغلاق اليدوي
     }
   });
 
@@ -625,6 +870,32 @@ function initPage() {
   renderTabs();
   initSearch();
   renderAccordion('');
+  
+  // استرجاع حالة السايدبار عند تحميل الصفحة (فقط في حالة الريفرش)
+  const sidebarOpen = localStorage.getItem('sidebarOpen');
+  if (sidebarOpen === 'true' && isPageRefreshed()) {
+    if (restoreSidebarContent()) {
+      // فتح السايدبار بدون حركة وكاستعادة من الريفرش
+      openSidebar(false, true);
+      // إضافة مستمعي الأحداث للكلمات القابلة للنطق
+      addSpeakableWordListeners();
+      // إضافة مستمعي الأحداث لأزرار النطق
+      document.querySelectorAll('#topicPanelBody .speak-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const text = btn.getAttribute('data-text');
+          const accent = btn.getAttribute('data-accent');
+          speakText(text, accent);
+        });
+      });
+    }
+  } else if (sidebarOpen === 'true') {
+    // إذا لم تكن الصفحة من الريفرش، امسح البيانات المحفوظة
+    localStorage.removeItem('sidebarOpen');
+    localStorage.removeItem('sidebarContent');
+    localStorage.removeItem('sidebarTitle');
+    localStorage.removeItem('sidebarTopic');
+  }
 }
 
 // DOM ready
@@ -673,249 +944,6 @@ function addSpeakableWordListeners() {
   });
 }
 
-// CSS للنظام المتقدم
-const advancedAccentStyle = document.createElement('style');
-advancedAccentStyle.textContent = `
-  /* شريط التحكم في اللهجة */
-  .accent-control-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background:#00cc55;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(5px);
-  }
-  
-  .accent-info {
-    color: white;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-  }
-  
-  .accent-info i {
-    color: white;
-  }
-  
-  /* أزرار اللهجة */
-  .accent-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 2px solid;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  
-  .uk-accent {
-    background: rgba(0, 102, 204, 0.1);
-    border-color: #0066cc;
-    color: #0066cc;
-  }
-  
-  .uk-accent:hover {
-    background: #0066cc;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
-  }
-  
-  .us-accent {
-    background: rgba(220, 53, 69, 0.1);
-    border-color: #dc3545;
-    color: #dc3545;
-  }
-  
-  .us-accent:hover {
-    background: #dc3545;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
-  }
-  
-  /* مؤشرات الكلمات حسب اللهجة */
-  .speakable-word.uk-mode {
-    border-bottom-color: #0066cc;
-    position: relative;
-  }
-  
-  .speakable-word.us-mode {
-    border-bottom-color: #dc3545;
-    position: relative;
-  }
-  
-  .speakable-word.uk-mode::after {
-    content: '🇬🇧';
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    font-size: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .speakable-word.us-mode::after {
-    content: '🇺🇸';
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    font-size: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .speakable-word:hover::after {
-    opacity: 1;
-  }
-  
-  /* تأكيد النطق */
-  .pronunciation-feedback {
-    position: absolute;
-    top: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #00cc55;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: bold;
-    z-index: 1000;
-    animation: feedbackPop 1s ease-out;
-  }
-  
-  @keyframes feedbackPop {
-    0% { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.8); }
-    50% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.1); }
-    100% { opacity: 0; transform: translateX(-50%) translateY(-5px) scale(1); }
-  }
-  
-  /* مؤشر المساعدة */
-  .help-indicator {
-    text-align: center;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255,255,255,0.2);
-  }
-  
-  .help-indicator small {
-    color: #00cc55;
-    font-style: italic;
-  }
-  
-  .help-indicator i {
-    color: #00cc55;
-  }
-  
-  /* تحسينات للموبايل */
-  @media (max-width: 768px) {
-    .accent-control-bar {
-      flex-direction: column;
-      gap: 10px;
-      padding: 12px;
-    }
-    
-    .accent-btn {
-      padding: 6px 12px;
-      font-size: 0.9rem;
-    }
-    
-    .pronunciation-feedback {
-      font-size: 10px;
-      padding: 3px 6px;
-    }
-  }
-  
-
-
-  .paragraph-content {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    border: 2px solid #00cc55;
-    padding: 25px;
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #2c3e50;
-    position: relative;
-  }
-
-  .speakable-word {
-    color: #00cc55;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 2px 6px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    position: relative;
-    text-decoration: none;
-    border-bottom: 2px dotted #00cc55;
-    display: inline-block;
-  }
-
-  .speakable-word:hover {
-    background: #00cc55 !important;
-    color: white !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 204, 85, 0.3);
-  }
-
-  .word-tooltip {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #2c3e50;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    z-index: 1000;
-    margin-bottom: 5px;
-  }
-
-  .word-tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: #2c3e50;
-  }
-
-  .speakable-word:hover .word-tooltip {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .speaking {
-    animation: speakPulse 0.6s ease-in-out !important;
-    background: #00cc55 !important;
-    color: white !important;
-  }
-
-  @keyframes speakPulse {
-    0%, 100% { 
-      transform: scale(1); 
-      box-shadow: 0 0 0 0 rgba(0, 204, 85, 0.7);
-    }
-    50% { 
-      transform: scale(1.05); 
-      box-shadow: 0 0 0 10px rgba(0, 204, 85, 0);
-    }
-  }
-`;
-document.head.appendChild(advancedAccentStyle);
-
 // باقي الكود الموجود
 document.querySelectorAll('.play-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -947,7 +975,6 @@ document.querySelectorAll('.table-modern tbody tr').forEach(row => {
 
 </script>
 
-
     
 <!-- Fullscreen Drawer -->
 <div id="topicPanel" class="topic-panel">
@@ -957,6 +984,4 @@ document.querySelectorAll('.table-modern tbody tr').forEach(row => {
   </div>
 </div>
 </body>
-
 </html>
-
