@@ -191,7 +191,7 @@ h2#lessonTitle {
 <body>
 
   <div class="container">
-    <a href="pages/Grammer.html" class="btn btn-link mb-3">&larr; Back to Grammar</a>
+    <a href="pages/grammar.html" class="btn btn-link mb-3">&larr; Back to Grammar</a>
     <h2 id="lessonTitle">Lesson</h2>
 
     <!-- Tabs -->
@@ -219,7 +219,7 @@ h2#lessonTitle {
   </div>
 
   <!-- data.js must be available -->
-  <script src="js/data.js"></script>
+  <script src="js/GrammarData.en.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
@@ -351,7 +351,8 @@ h2#lessonTitle {
         exercises.forEach((ex, i) => {
           const selected = document.querySelector(`input[name="q${i}"]:checked`);
           const userAnswer = selected ? parseInt(selected.value, 10) : null;
-          const correctAnswer = ex.a !== undefined ? ex.a : 0;
+          const correctAnswer = ex.ans !== undefined ? ex.ans : ex.a !== undefined ? ex.a : 0;
+
           
           // إزالة الألوان السابقة
           const labels = document.querySelectorAll(`input[name="q${i}"] + label`);
